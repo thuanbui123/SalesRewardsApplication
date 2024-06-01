@@ -1,9 +1,10 @@
 package com.example.mapper;
 
 import com.example.DTO.AccountDTO;
+import com.example.response.AccountResponse;
 import com.example.entity.AccountEntity;
-import com.example.entity.RoleEntity;
 import com.example.model.AccountModel;
+import com.example.utils.DateTimeUtil;
 import com.example.utils.PasswordEncoderUtil;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,8 @@ public class AccountMapper {
         account.setEmail(accountModel.getEmail());
         account.setPasswordHash(passwordHash);
         account.setRoleId(2);
+        account.setIsActive(true);
+        account.setLastLogin(LocalDateTime.now());
         account.setCreatedAt(LocalDateTime.now());
         return account;
     }
@@ -52,9 +55,32 @@ public class AccountMapper {
         accountModel.setEmail(accountEntity.getEmail());
         accountModel.setName(accountEntity.getName());
         accountModel.setPassword(accountEntity.getPasswordHash());
-        accountModel.setRoleId(accountEntity.getRoleId());
+        if (accountEntity.getRoleId() == 1) {
+            accountModel.setRole("Admin");
+        } else {
+            accountModel.setRole("User");
+        }
+        accountModel.setLastLogin(DateTimeUtil.formatLocalDateTime(accountEntity.getLastLogin()));
+        accountModel.setIsActive(accountEntity.getIsActive());
         accountModel.setCreatedAt(accountEntity.getCreatedAt());
 
         return accountModel;
+    }
+
+    public static AccountResponse mapToResponse (AccountEntity accountEntity) {
+        AccountResponse accountResponse = new AccountResponse();
+        accountResponse.setId(accountEntity.getId());
+        accountResponse.setEmail(accountEntity.getEmail());
+        accountResponse.setName(accountEntity.getName());
+        if (1 != accountEntity.getRoleId()) {
+            accountResponse.setRole("User");
+        } else {
+            accountResponse.setRole("Admin");
+        }
+        accountResponse.setLastLogin(DateTimeUtil.formatLocalDateTime(accountEntity.getLastLogin()));
+        accountResponse.setIsActive(accountEntity.getIsActive());
+        accountResponse.setCreatedAt(DateTimeUtil.formatLocalDateTime(accountEntity.getCreatedAt()));
+
+        return accountResponse;
     }
 }

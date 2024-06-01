@@ -1,17 +1,16 @@
-package com.example.model;
+package com.example.response;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class AccountModel {
+public class AccountResponse {
     private Integer id;
     private String email;
     private String name;
-    private String password;
     private String role;
     private String lastLogin;
     private Boolean isActive;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String createdAt;
 }

@@ -22,4 +22,13 @@ public class CategoryMapper {
 
         return categoryEntity;
     }
+
+    public static CategoryEntity mapModelToEntity(CategoryModel categoryModel) {
+        CategoryEntity categoryEntity = new CategoryEntity();
+        categoryEntity.setId(categoryModel.getId());
+        categoryEntity.setName(categoryModel.getName());
+        categoryEntity.setDescription(categoryModel.getDescription());
+
+        return categoryEntity;
+    }
 }
